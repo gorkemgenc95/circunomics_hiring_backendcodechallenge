@@ -32,11 +32,12 @@ class Commit extends Model
         ];
     }
 
-    public function scopeForRepository($query, string $owner, string $repo, string $platform = 'github')
+    public function scopeForRepository($query, string $platform, string $owner, string $repo)
     {
-        return $query->where('repository_owner', $owner)
-                    ->where('repository_name', $repo)
-                    ->where('platform', $platform);
+        return $query
+            ->where('platform', $platform)
+            ->where('repository_owner', $owner)
+            ->where('repository_name', $repo);
     }
 
     public function scopeMostRecent($query, int $limit = 1000)

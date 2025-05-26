@@ -2,15 +2,16 @@
 
 namespace Tests\Unit\Services;
 
-use App\Services\CommitQueryService;
-use App\Repositories\CommitRepositoryInterface;
 use App\Models\Commit;
+use App\Repositories\CommitRepositoryInterface;
+use App\Services\CommitQueryService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CommitQueryServiceTest extends TestCase
 {
     private CommitQueryService $service;
+
     private CommitRepositoryInterface|MockObject $mockRepository;
 
     protected function setUp(): void
@@ -32,11 +33,11 @@ class CommitQueryServiceTest extends TestCase
                 ['repository_owner', 'nodejs'],
                 ['repository_name', 'node'],
                 ['platform', 'github'],
-                ['date', '2023-01-01 12:00:00']
+                ['date', '2023-01-01 12:00:00'],
             ]);
 
         $commits = [$mockCommit];
-        
+
         $this->mockRepository
             ->expects($this->once())
             ->method('findPaginated')
@@ -57,7 +58,7 @@ class CommitQueryServiceTest extends TestCase
     {
         $mockRepository = $this->createMock(CommitRepositoryInterface::class);
         $service = new CommitQueryService($mockRepository);
-        
+
         $this->assertInstanceOf(CommitQueryService::class, $service);
     }
-} 
+}

@@ -44,4 +44,4 @@ class Commit extends Model
     {
         return $query->orderBy('date', 'desc')->limit($limit);
     }
-} 
+}

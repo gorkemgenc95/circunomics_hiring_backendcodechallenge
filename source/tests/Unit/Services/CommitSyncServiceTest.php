@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Services;
 
-use App\Services\CommitSyncService;
 use App\Api\ApiClientInterface;
-use App\Repositories\CommitRepositoryInterface;
 use App\Factories\CommitFactory;
+use App\Repositories\CommitRepositoryInterface;
 use App\Services\BatchProcessor;
+use App\Services\CommitSyncService;
 use App\Services\SyncLogger;
 use PHPUnit\Framework\TestCase;
 
-class CommitSyncServiceTest extends TestCase 
+class CommitSyncServiceTest extends TestCase
 {
     public function testSyncCommitsReturnsSavedAndDuplicateCount()
     {
@@ -42,7 +42,7 @@ class CommitSyncServiceTest extends TestCase
         );
 
         $result = $service->syncCommits('test', 'repo', 1);
-        
+
         $this->assertArrayHasKey('saved', $result);
         $this->assertArrayHasKey('duplicates', $result);
         $this->assertArrayHasKey('fetched', $result);

@@ -42,7 +42,7 @@ class CommitQueryService
                 'total_commits' => $totalCommits,
                 'has_previous' => $page > 1,
                 'has_next' => $page < $totalPages,
-            ]
+            ],
         ];
     }
-} 
+}

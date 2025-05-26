@@ -13,9 +13,13 @@ use Exception;
 class CommitSyncService
 {
     private ApiClientInterface $apiClient;
+
     private CommitRepositoryInterface $repository;
+
     private CommitFactory $commitFactory;
+
     private BatchProcessor $batchProcessor;
+
     private SyncLogger $logger;
 
     public function __construct(
@@ -37,15 +41,17 @@ class CommitSyncService
         try {
             $platform = $this->apiClient->getPlatform();
             $this->logger->info("Fetching $limit commits from $platform for $owner/$repo...");
-            
+
             $apiCommits = $this->fetchCommitsFromApi($owner, $repo, $limit);
             $stats = $this->processAndSaveCommits($apiCommits, $owner, $repo);
-            
+
             $this->logger->logSyncResults($stats);
+
             return $stats;
 
         } catch (Exception $e) {
             $this->logger->error("Error syncing commits: " . $e->getMessage());
+
             return [
                 'fetched' => 0,
                 'saved' => 0,
@@ -60,13 +66,15 @@ class CommitSyncService
     private function fetchCommitsFromApi(string $owner, string $repo, int $limit): array
     {
         $apiCommits = $this->apiClient->getMostRecentCommits($owner, $repo, $limit);
-        
+
         if (empty($apiCommits)) {
             $this->logger->info("No commits found from API.");
+
             return [];
         }
 
         $this->logger->info("Fetched " . count($apiCommits) . " commits from API.");
+
         return $apiCommits;
     }
 
@@ -83,9 +91,9 @@ class CommitSyncService
 
         $commits = $this->transformApiCommitsToModels($apiCommits, $owner, $repo);
         $newCommits = $this->filterOutDuplicates($commits);
-        
+
         $saved = $this->batchProcessor->saveCommits($newCommits);
-        
+
         return [
             'fetched' => count($apiCommits),
             'saved' => $saved,
@@ -100,7 +108,7 @@ class CommitSyncService
     {
         $platform = $this->apiClient->getPlatform();
         $commits = [];
-        
+
         foreach ($apiCommits as $commitData) {
             $commits[] = [
                 'hash' => $commitData['hash'],
@@ -113,7 +121,7 @@ class CommitSyncService
                         ],
                         'message' => '',
                     ],
-                ], $owner, $repo, $platform)
+                ], $owner, $repo, $platform),
             ];
         }
 
@@ -123,13 +131,13 @@ class CommitSyncService
     private function filterOutDuplicates(array $commits): array
     {
         $newCommits = [];
-        
+
         foreach ($commits as $commitData) {
-            if (!$this->repository->existsByHash($commitData['hash'])) {
+            if (! $this->repository->existsByHash($commitData['hash'])) {
                 $newCommits[] = $commitData['commit'];
             }
         }
-        
+
         return $newCommits;
     }
 }

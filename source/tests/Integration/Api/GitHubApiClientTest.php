@@ -15,6 +15,11 @@ class GitHubApiClientTest extends TestCase
         $this->client = new GitHubApiClient();
     }
 
+    public function testGetPlatformName(): void
+    {
+        $this->assertEquals('github', $this->client->getPlatform());
+    }
+
     public function testGetRecentCommits(): void
     {
         $commits = $this->client->getMostRecentCommits('nodejs', 'node', 10);

@@ -3,8 +3,8 @@
 namespace Tests\Unit\Factories;
 
 use App\Factories\CommitFactory;
-use PHPUnit\Framework\TestCase;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 class CommitFactoryTest extends TestCase
 {
@@ -80,4 +80,4 @@ class CommitFactoryTest extends TestCase
 
         $this->factory->createFromGitHubData($gitHubData, 'test', 'repo');
     }
-} 
+}

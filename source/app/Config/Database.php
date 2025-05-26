@@ -7,6 +7,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 class Database
 {
     private DatabaseFactory $factory;
+
     private ?Capsule $connection = null;
 
     public function __construct(DatabaseFactory $factory = null)
@@ -27,4 +28,4 @@ class Database
     {
         $this->getConnection();
     }
-} 
+}

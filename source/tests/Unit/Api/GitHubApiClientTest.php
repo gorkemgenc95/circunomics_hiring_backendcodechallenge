@@ -51,7 +51,7 @@ class GitHubApiClientTest extends TestCase
         $client = $this->createMockClient([], 404);
 
         $this->expectException(GitHubApiException::class);
-        
+
         $client->getMostRecentCommits('test-owner', 'nonexistent-repo', 1);
     }
 
@@ -104,7 +104,7 @@ class GitHubApiClientTest extends TestCase
 
         foreach ($expectedData as $index => $expected) {
             $actual = $actualCommits[$index];
-            
+
             $this->assertEquals($expected['sha'], $actual['hash']);
             $this->assertEquals($expected['commit']['author']['name'], $actual['author']);
             $this->assertInstanceOf(DateTime::class, $actual['date']);

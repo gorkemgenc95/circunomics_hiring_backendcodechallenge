@@ -28,9 +28,9 @@ class CommitFactory
     public function createFromGitHubData(array $commitData, string $owner, string $repo): Commit
     {
         $this->validateGitHubData($commitData);
-        
+
         $date = new DateTime($commitData['commit']['author']['date']);
-        
+
         return new Commit([
             'hash' => $commitData['sha'],
             'author' => $commitData['commit']['author']['name'],
@@ -61,15 +61,15 @@ class CommitFactory
     private function validateGitHubData(array $commitData): void
     {
         $required = ['sha', 'commit'];
-        
+
         foreach ($required as $field) {
-            if (!isset($commitData[$field])) {
+            if (! isset($commitData[$field])) {
                 throw new InvalidArgumentException("Missing required field: {$field}");
             }
         }
-        
-        if (!isset($commitData['commit']['author']['name']) || !isset($commitData['commit']['author']['date'])) {
+
+        if (! isset($commitData['commit']['author']['name']) || ! isset($commitData['commit']['author']['date'])) {
             throw new InvalidArgumentException("Missing required author data");
         }
     }
-} 
+}

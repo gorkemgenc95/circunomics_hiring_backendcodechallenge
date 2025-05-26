@@ -28,5 +28,4 @@ interface CommitRepositoryInterface
      * @return Commit[]
      */
     public function getMostRecent(int $limit = 1000): array;
-
-} 
+}

@@ -21,4 +21,4 @@ class SyncLogger
         $this->info("-- Saved: {$stats['saved']}");
         $this->info("-- Duplicates skipped: {$stats['duplicates']}");
     }
-} 
+}

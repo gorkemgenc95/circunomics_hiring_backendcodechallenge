@@ -2,13 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Models\Commit;
 use App\Config\Database;
+use App\Models\Commit;
 use DateTime;
 
 class MySqlCommitRepository implements CommitRepositoryInterface
 {
     private Database $database;
+
     private Commit $commitModel;
 
     public function __construct(?Database $database = null, ?Commit $commitModel = null)
@@ -31,7 +32,7 @@ class MySqlCommitRepository implements CommitRepositoryInterface
         }
 
         $chunks = array_chunk($commits, 100);
-        
+
         foreach ($chunks as $chunk) {
             $data = [];
             foreach ($chunk as $commit) {
@@ -39,8 +40,8 @@ class MySqlCommitRepository implements CommitRepositoryInterface
                     $data[] = $this->adjustCommitDateFormat($commit);
                 }
             }
-            
-            if (!empty($data)) {
+
+            if (! empty($data)) {
                 $this->commitModel->newQuery()->insert($data);
             }
         }
@@ -73,22 +74,22 @@ class MySqlCommitRepository implements CommitRepositoryInterface
     public function count(?string $platform = 'github', ?string $owner = null, ?string $repo = null): int
     {
         $query = $this->commitModel->newQuery();
-        
+
         if ($owner && $repo) {
             $query->forRepository($platform, $owner, $repo);
         }
-        
+
         return $query->count();
     }
 
     public function findPaginated(int $offset, int $limit, ?string $platform = 'github', ?string $owner = null, ?string $repo = null): array
     {
         $query = $this->commitModel->newQuery();
-        
+
         if ($platform && $owner && $repo) {
             $query->forRepository($platform, $owner, $repo);
         }
-        
+
         return $query->orderBy('date', 'desc')
                     ->offset($offset)
                     ->limit($limit)
@@ -112,6 +113,7 @@ class MySqlCommitRepository implements CommitRepositoryInterface
         $now = date('Y-m-d H:i:s');
         $attributes['created_at'] = $now;
         $attributes['updated_at'] = $now;
+
         return $attributes;
     }
-} 
+}

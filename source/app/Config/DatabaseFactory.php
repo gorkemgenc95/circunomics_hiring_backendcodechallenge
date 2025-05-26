@@ -2,13 +2,14 @@
 
 namespace App\Config;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 use Dotenv\Dotenv;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use InvalidArgumentException;
 
 class DatabaseFactory
 {
     private ?Capsule $capsule = null;
+
     private array $config;
 
     public function __construct(array $config = [])
@@ -65,11 +66,11 @@ class DatabaseFactory
     private function validateConfig(array $config): void
     {
         $required = ['driver', 'host', 'database', 'username'];
-        
+
         foreach ($required as $field) {
             if (empty($config[$field])) {
                 throw new InvalidArgumentException("Database config missing required field: {$field}");
             }
         }
     }
-} 
+}

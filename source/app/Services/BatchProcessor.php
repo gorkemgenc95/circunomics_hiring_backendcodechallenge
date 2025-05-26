@@ -7,6 +7,7 @@ use App\Repositories\CommitRepositoryInterface;
 class BatchProcessor
 {
     private CommitRepositoryInterface $repository;
+
     private int $batchSize;
 
     public function __construct(CommitRepositoryInterface $repository, int $batchSize = 100)
@@ -41,4 +42,4 @@ class BatchProcessor
     {
         $this->batchSize = $batchSize;
     }
-} 
+}

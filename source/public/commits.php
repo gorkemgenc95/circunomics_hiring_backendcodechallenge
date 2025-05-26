@@ -237,16 +237,22 @@ try {
         <div class="filters">
             <form method="GET">
                 <label>Platform:</label>
-                <select name="platform">
-                    <option value="github"<?= $platform === 'github' ? ' selected' : '' ?>>GitHub</option>
-                    <option value="gitlab"<?= $platform === 'gitlab' ? ' selected' : '' ?>>GitLab</option>
-                    <option value="bitbucket"<?= $platform === 'bitbucket' ? ' selected' : '' ?>>Bitbucket</option>
-                </select>
-                
+                <label>
+                    <select name="platform">
+                        <option value="github"<?= $platform === 'github' ? ' selected' : '' ?>>GitHub</option>
+                        <option value="gitlab"<?= $platform === 'gitlab' ? ' selected' : '' ?>>GitLab</option>
+                        <option value="bitbucket"<?= $platform === 'bitbucket' ? ' selected' : '' ?>>Bitbucket</option>
+                    </select>
+                </label>
+
                 <label>Filter by repository:</label>
-                <input type="text" name="owner" placeholder="Owner (e.g., nodejs)" value="<?= htmlspecialchars($owner ?? '') ?>">
+                <label>
+                    <input type="text" name="owner" placeholder="Owner (e.g., nodejs)" value="<?= htmlspecialchars($owner ?? '') ?>">
+                </label>
                 <span>/</span>
-                <input type="text" name="repo" placeholder="Repository (e.g., node)" value="<?= htmlspecialchars($repo ?? '') ?>">
+                <label>
+                    <input type="text" name="repo" placeholder="Repository (e.g., node)" value="<?= htmlspecialchars($repo ?? '') ?>">
+                </label>
                 <button type="submit">Filter</button>
                 <a href="/commits" class="filters button clear-filters">Clear Filters</a>
             </form>

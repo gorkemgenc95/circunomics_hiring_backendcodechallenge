@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: git_api_service_app
+    working_dir: /var/www/html
+    volumes:
+      - ./source:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=git_api_service_db
+      - DB_USERNAME=user
+      - DB_PASSWORD=password123
+
+  db:
+    image: mysql:8.0
+    container_name: git_api_service_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: git_api_service_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password123
+      MYSQL_ROOT_PASSWORD: root_password123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data: 

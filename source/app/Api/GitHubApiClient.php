@@ -27,6 +27,11 @@ class GitHubApiClient implements ApiClientInterface
         ]);
     }
 
+    public function getPlatform(): string
+    {
+        return 'github';
+    }
+
     /**
      * @param string $owner Repository owner
      * @param string $repo Repository name

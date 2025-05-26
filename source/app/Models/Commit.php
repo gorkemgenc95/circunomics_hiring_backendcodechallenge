@@ -14,6 +14,7 @@ class Commit extends Model
         'date',
         'repository_owner',
         'repository_name',
+        'platform',
         'message',
     ];
 
@@ -24,16 +25,18 @@ class Commit extends Model
     public function toApiFormat(): array
     {
         return [
-            'hash' => $this->hash,
-            'author' => $this->author,
-            'date' => $this->date,
+            'hash' => $this->getAttribute('hash'),
+            'author' => $this->getAttribute('author'),
+            'date' => $this->getAttribute('date'),
+            'platform' => $this->getAttribute('platform'),
         ];
     }
 
-    public function scopeForRepository($query, string $owner, string $repo)
+    public function scopeForRepository($query, string $owner, string $repo, string $platform = 'github')
     {
         return $query->where('repository_owner', $owner)
-                    ->where('repository_name', $repo);
+                    ->where('repository_name', $repo)
+                    ->where('platform', $platform);
     }
 
     public function scopeMostRecent($query, int $limit = 1000)

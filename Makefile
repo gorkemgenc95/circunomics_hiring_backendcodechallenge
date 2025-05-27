@@ -1,4 +1,4 @@
-.PHONY: test test-unit test-integration test-coverage cs-fix cs-check fetch-github-commits
+.PHONY: test test-unit test-integration cs-fix cs-check fetch-github-commits docker-up docker-down migrate sync-gh-commits setup
 
 # Default target
 test: test-unit test-integration
@@ -12,11 +12,6 @@ test-unit:
 test-integration:
 	@echo "Running integration tests..."
 	cd source && ./vendor/bin/phpunit tests/Integration --colors=always
-
-# Run tests with coverage report
-test-coverage:
-	@echo "Running tests with coverage report..."
-	cd source && XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html coverage --coverage-text
 
 # Install dependencies
 install:
@@ -36,11 +31,47 @@ cs-check:
 	@echo "Checking code style..."
 	cd source && ./vendor/bin/php-cs-fixer fix --dry-run --diff
 
-# Fetch GitHub commits
-# Usage: make fetch-commits [OWNER=owner] [REPO=repo] [LIMIT=limit]
-# Example: make fetch-commits OWNER=symfony REPO=symfony LIMIT=20
-fetch-github-commits:
-	@cd source && php scripts/fetch_github_commits.php \
-		$(if $(OWNER),--owner=$(OWNER)) \
-		$(if $(REPO),--repo=$(REPO)) \
-		$(if $(LIMIT),--limit=$(LIMIT)) 
+# Docker operations
+docker-up:
+	@echo "Starting Docker containers..."
+	docker-compose up -d
+
+docker-down:
+	@echo "Stopping Docker containers..."
+	docker-compose down
+
+docker-logs:
+	@echo "Showing Docker logs..."
+	docker-compose logs -f
+
+# Database operations
+migrate:
+	@echo "Running database migrations..."
+	cd source && php scripts/migrate.php
+
+# Create .env file from example (if it doesn't exist)
+setup-env:
+	@if [ ! -f source/.env ]; then \
+		echo "Creating .env file..."; \
+		echo "DB_CONNECTION=mysql" > source/.env; \
+		echo "DB_HOST=localhost" >> source/.env; \
+		echo "DB_PORT=3306" >> source/.env; \
+		echo "DB_DATABASE=git_api_service_db" >> source/.env; \
+		echo "DB_USERNAME=user" >> source/.env; \
+		echo "DB_PASSWORD=password123" >> source/.env; \
+		echo "GITHUB_API_BASE_URL=https://api.github.com" >> source/.env; \
+		echo ".env file created"; \
+	else \
+		echo ".env file already exists"; \
+	fi
+
+sync-gh-commits:
+	@echo "Syncing commits from GitHub..."
+	@docker-compose exec app php scripts/sync_github_commits.php
+
+# Setup complete development environment
+setup: setup-env docker-up
+	@echo "Waiting for database to be ready..."
+	@sleep 10
+	@make migrate
+	@echo "Development environment is ready!" 

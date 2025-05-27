@@ -18,9 +18,9 @@ class SyncLoggerTest extends TestCase
     public function testInfoOutputsMessageWithNewline(): void
     {
         $message = "Test info message";
-        
+
         $this->expectOutputString($message . "\n");
-        
+
         $this->logger->info($message);
     }
 
@@ -28,9 +28,9 @@ class SyncLoggerTest extends TestCase
     {
         $message = "Test error message";
         $expectedOutput = "ERROR: " . $message . "\n";
-        
+
         $this->expectOutputString($expectedOutput);
-        
+
         $this->logger->error($message);
     }
 
@@ -39,16 +39,16 @@ class SyncLoggerTest extends TestCase
         $stats = [
             'fetched' => 100,
             'saved' => 75,
-            'duplicates' => 25
+            'duplicates' => 25,
         ];
-        
+
         $expectedOutput = "Sync completed:\n";
         $expectedOutput .= "-- Fetched: 100\n";
         $expectedOutput .= "-- Saved: 75\n";
         $expectedOutput .= "-- Duplicates skipped: 25\n";
-        
+
         $this->expectOutputString($expectedOutput);
-        
+
         $this->logger->logSyncResults($stats);
     }
 
@@ -57,16 +57,16 @@ class SyncLoggerTest extends TestCase
         $stats = [
             'fetched' => 0,
             'saved' => 0,
-            'duplicates' => 0
+            'duplicates' => 0,
         ];
-        
+
         $expectedOutput = "Sync completed:\n";
         $expectedOutput .= "-- Fetched: 0\n";
         $expectedOutput .= "-- Saved: 0\n";
         $expectedOutput .= "-- Duplicates skipped: 0\n";
-        
+
         $this->expectOutputString($expectedOutput);
-        
+
         $this->logger->logSyncResults($stats);
     }
 
@@ -75,16 +75,16 @@ class SyncLoggerTest extends TestCase
         $stats = [
             'fetched' => 10000,
             'saved' => 9500,
-            'duplicates' => 500
+            'duplicates' => 500,
         ];
-        
+
         $expectedOutput = "Sync completed:\n";
         $expectedOutput .= "-- Fetched: 10000\n";
         $expectedOutput .= "-- Saved: 9500\n";
         $expectedOutput .= "-- Duplicates skipped: 500\n";
-        
+
         $this->expectOutputString($expectedOutput);
-        
+
         $this->logger->logSyncResults($stats);
     }
-} 
+}

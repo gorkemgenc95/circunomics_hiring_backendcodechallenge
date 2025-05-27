@@ -58,7 +58,7 @@ class CommitTest extends TestCase
 
         $reflection = new ReflectionMethod($this->commit, 'scopeForRepository');
         $parameters = $reflection->getParameters();
-        
+
         $this->assertCount(4, $parameters);
         $this->assertEquals('query', $parameters[0]->getName());
         $this->assertEquals('platform', $parameters[1]->getName());
@@ -72,7 +72,7 @@ class CommitTest extends TestCase
 
         $reflection = new ReflectionMethod($this->commit, 'scopeMostRecent');
         $parameters = $reflection->getParameters();
-        
+
         $this->assertCount(2, $parameters);
         $this->assertEquals('query', $parameters[0]->getName());
         $this->assertEquals('limit', $parameters[1]->getName());
@@ -80,4 +80,4 @@ class CommitTest extends TestCase
         $this->assertTrue($parameters[1]->isDefaultValueAvailable());
         $this->assertEquals(1000, $parameters[1]->getDefaultValue());
     }
-} 
+}

@@ -26,7 +26,7 @@ class DatabaseFactory
 
         $config = [
             'driver' => $this->getConfig('DB_CONNECTION', 'mysql'),
-            'host' => $this->getConfig('DB_HOST', 'localhost'),
+            'host' => $this->getConfig('DB_HOST', 'db'),
             'port' => $this->getConfig('DB_PORT', '3306'),
             'database' => $this->getConfig('DB_DATABASE', 'git_api_service_db'),
             'username' => $this->getConfig('DB_USERNAME', 'user'),

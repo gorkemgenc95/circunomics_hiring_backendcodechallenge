@@ -54,7 +54,7 @@ setup-env:
 	@if [ ! -f source/.env ]; then \
 		echo "Creating .env file..."; \
 		echo "DB_CONNECTION=mysql" > source/.env; \
-		echo "DB_HOST=localhost" >> source/.env; \
+		echo "DB_HOST=db" >> source/.env; \
 		echo "DB_PORT=3306" >> source/.env; \
 		echo "DB_DATABASE=git_api_service_db" >> source/.env; \
 		echo "DB_USERNAME=user" >> source/.env; \
@@ -72,6 +72,6 @@ sync-gh-commits:
 # Setup complete development environment
 setup: setup-env docker-up
 	@echo "Waiting for database to be ready..."
-	@sleep 10
-	@make migrate
+	@sleep 15
+	@docker-compose exec app php scripts/migrate.php
 	@echo "Development environment is ready!" 

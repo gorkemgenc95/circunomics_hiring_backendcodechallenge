@@ -11,23 +11,25 @@ class CreateCommitsTable extends Migration
      */
     public function up(): void
     {
-        Capsule::schema()->create('commits', function (Blueprint $table) {
-            $table->id();
-            $table->string('hash', 40)->unique(); // SHA-1 hash is 40 characters
-            $table->string('author');
-            $table->timestamp('date');
-            $table->string('repository_owner');
-            $table->string('repository_name');
-            $table->string('platform', 20)->default('github');
-            $table->text('message')->nullable();
-            $table->timestamps();
+        if (!Capsule::schema()->hasTable('commits')) {
+            Capsule::schema()->create('commits', function (Blueprint $table) {
+                $table->id();
+                $table->string('hash', 40)->unique(); // SHA-1 hash is 40 characters
+                $table->string('author');
+                $table->timestamp('date');
+                $table->string('repository_owner');
+                $table->string('repository_name');
+                $table->string('platform', 20)->default('github');
+                $table->text('message')->nullable();
+                $table->timestamps();
 
-            // Indexes for better query performance
-            $table->index(['repository_owner', 'repository_name']);
-            $table->index('date');
-            $table->index('author');
-            $table->index(['repository_owner', 'repository_name', 'platform'], 'commits_repo_platform_index');
-        });
+                // Indexes for better query performance
+                $table->index(['repository_owner', 'repository_name']);
+                $table->index('date');
+                $table->index('author');
+                $table->index(['repository_owner', 'repository_name', 'platform'], 'commits_repo_platform_index');
+            });
+        }
     }
 
     /**

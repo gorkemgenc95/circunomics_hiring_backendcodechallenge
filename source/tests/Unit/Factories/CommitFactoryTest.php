@@ -3,6 +3,7 @@
 namespace Tests\Unit\Factories;
 
 use App\Factories\CommitFactory;
+use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -79,5 +80,32 @@ class CommitFactoryTest extends TestCase
         ];
 
         $this->factory->createFromGitHubData($gitHubData, 'test', 'repo');
+    }
+
+    public function testCreateFromPlatformDataWithGitLabThrowsException(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('GitLab has not been implemented');
+
+        $gitLabData = ['some' => 'data'];
+        $this->factory->createFromPlatformData($gitLabData, 'owner', 'repo', 'gitlab');
+    }
+
+    public function testCreateFromPlatformDataWithBitbucketThrowsException(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Bitbucket has not been implemented');
+
+        $bitbucketData = ['some' => 'data'];
+        $this->factory->createFromPlatformData($bitbucketData, 'owner', 'repo', 'bitbucket');
+    }
+
+    public function testCreateFromPlatformDataWithUnsupportedPlatformThrowsException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unsupported platform: unsupported');
+
+        $data = ['some' => 'data'];
+        $this->factory->createFromPlatformData($data, 'owner', 'repo', 'unsupported');
     }
 }

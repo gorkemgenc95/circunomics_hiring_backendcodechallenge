@@ -18,6 +18,7 @@ class CreateCommitsTable extends Migration
             $table->timestamp('date');
             $table->string('repository_owner');
             $table->string('repository_name');
+            $table->string('platform', 20)->default('github');
             $table->text('message')->nullable();
             $table->timestamps();
 
@@ -25,6 +26,7 @@ class CreateCommitsTable extends Migration
             $table->index(['repository_owner', 'repository_name']);
             $table->index('date');
             $table->index('author');
+            $table->index(['repository_owner', 'repository_name', 'platform'], 'commits_repo_platform_index');
         });
     }
 

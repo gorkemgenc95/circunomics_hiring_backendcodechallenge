@@ -83,7 +83,7 @@ class GitHubApiClientTest extends TestCase
 
     private function createMockClient(array $responses, int $statusCode = 200): GitHubApiClient
     {
-        if (empty($responses) || (isset($responses[0]) && isset($responses[0]['sha']))) {
+        if (empty($responses) || (isset($responses[0]['sha']))) {
             $responses = [$responses];
         }
 

@@ -5,11 +5,12 @@ namespace Tests\Unit\Services;
 use App\Models\Commit;
 use App\Repositories\CommitRepositoryInterface;
 use App\Services\BatchProcessor;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class BatchProcessorTest extends TestCase
 {
-    private $mockRepository;
+    private CommitRepositoryInterface|MockObject $mockRepository;
 
     protected function setUp(): void
     {

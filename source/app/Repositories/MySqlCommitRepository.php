@@ -47,28 +47,11 @@ class MySqlCommitRepository implements CommitRepositoryInterface
         }
     }
 
-    public function find(string $platform, string $owner, string $repo, int $limit = 1000): array
-    {
-        return $this->commitModel->newQuery()
-                    ->forRepository($platform, $owner, $repo)
-                    ->mostRecent($limit)
-                    ->get()
-                    ->all();
-    }
-
     public function existsByHash(string $hash): bool
     {
         return $this->commitModel->newQuery()
                     ->where('hash', $hash)
                     ->exists();
-    }
-
-    public function getMostRecent(int $limit = 1000): array
-    {
-        return $this->commitModel->newQuery()
-                    ->mostRecent($limit)
-                    ->get()
-                    ->all();
     }
 
     public function count(?string $platform = 'github', ?string $owner = null, ?string $repo = null): int
